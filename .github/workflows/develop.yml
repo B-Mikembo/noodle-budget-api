@@ -9,8 +9,24 @@ on:
       - develop
 
 jobs:
-  build-and-tests:
+  build:
+    name: Build and run tests
     runs-on: ubuntu-latest
+
+    services:
+      db-tests:
+        image: postgres:14
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        env:
+          POSTGRES_USER: prisma
+          POSTGRES_PASSWORD: prisma
+          POSTGRES_DB: tests
 
     steps:
       - uses: actions/checkout@v4
@@ -27,5 +43,10 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Tests
-        run: npm run test
+      - name: Unit tests
+        run: npm run test:unit
+
+      - name: Integration tests
+        run: npm run test:int
+        env:
+          DATABASE_URL: 'postgresql://prisma:prisma@localhost:5432/tests'

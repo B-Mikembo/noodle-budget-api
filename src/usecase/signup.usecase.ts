@@ -1,9 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import { User } from '../domain/user/user';
 import { CreateUserAPI } from '../infrastructure/api/types/user/onboarding/createUserAPI';
+import { UserRepository } from '../infrastructure/repository/user/user.repository';
 
 @Injectable()
 export class SignupUsecase {
-  constructor() {}
+  constructor(private userRepository: UserRepository) {}
 
-  async signupUser(userInput: CreateUserAPI) {}
+  async signupUser(userInput: CreateUserAPI) {
+    const userToCreate = User.createNewUser(userInput.email);
+    await this.userRepository.createUser(userToCreate);
+  }
 }

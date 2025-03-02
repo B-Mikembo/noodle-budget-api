@@ -28,6 +28,10 @@ describe('/users - Sign up - (API test)', () => {
     const user = await userRepository.findByEmail('w@w.com');
 
     expect(response.status).toBe(201);
-    expect(user).not.toBeNull();
+    expect(user.lastName).toBeNull();
+    expect(user.firstName).toBeNull();
+    expect(user.email).toEqual('w@w.com');
+    expect(user.passwordHash.length).toBeGreaterThan(20);
+    expect(user.passwordSalt.length).toBeGreaterThan(20);
   });
 });

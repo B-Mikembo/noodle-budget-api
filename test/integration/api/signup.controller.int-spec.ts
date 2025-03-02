@@ -34,4 +34,16 @@ describe('/users - Sign up - (API test)', () => {
     expect(user.passwordHash.length).toBeGreaterThan(20);
     expect(user.passwordSalt.length).toBeGreaterThan(20);
   });
+
+  it('POST /users - bad password', async () => {
+    const response = await TestUtil.getServer().post('/users').send({
+      email: 'w@w.com',
+      password: 'to use',
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe(
+      'Le mot de passe doit contenir au moins un chiffre',
+    );
+  });
 });

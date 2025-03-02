@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { PasswordManager } from './manager/passwordManager';
 
 export class User {
   id: string;
@@ -26,5 +27,9 @@ export class User {
       passwordSalt: null,
       created_at: undefined,
     });
+  }
+
+  public setPassword?(password: string) {
+    PasswordManager.setUserPassword(this, password);
   }
 }

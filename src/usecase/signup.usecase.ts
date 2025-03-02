@@ -9,6 +9,7 @@ export class SignupUsecase {
 
   async signupUser(userInput: CreateUserAPI) {
     const userToCreate = User.createNewUser(userInput.email);
+    userToCreate.setPassword(userInput.password);
     await this.userRepository.createUser(userToCreate);
   }
 }

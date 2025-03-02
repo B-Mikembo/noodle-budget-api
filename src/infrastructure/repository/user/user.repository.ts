@@ -8,6 +8,21 @@ import { PrismaService } from '../../prisma/prisma.service';
 export class UserRepository {
   constructor(private prisma: PrismaService) {}
 
+  async findByEmail(email: string): Promise<User | null> {
+    const users = await this.prisma.user.findMany({
+      where: {
+        email: {
+          equals: email,
+          mode: 'insensitive',
+        },
+      },
+    });
+    if (users.length !== 1) {
+      return null;
+    }
+    return this.buildUserFromDB(users[0]);
+  }
+
   async createUser(user: User) {
     try {
       await this.prisma.user.create({
@@ -20,6 +35,23 @@ export class UserRepository {
         }
       }
     }
+  }
+
+  private buildUserFromDB(user: Partial<UserDB>): User {
+    if (!user) {
+      return null;
+    }
+    const result = new User({
+      id: user.id,
+      lastName: user.lastName,
+      firstName: user.firstName,
+      email: user.email,
+      passwordHash: user.passwordHash,
+      passwordSalt: user.passwordSalt,
+      created_at: user.created_at,
+      updated_at: user.updated_at,
+    });
+    return result;
   }
 
   private buildNewDBUserFromUser(user: User): UserDB {

@@ -1,7 +1,9 @@
+import { UserRepository } from '../../../src/infrastructure/repository/user/user.repository';
 import { TestUtil } from '../../TestUtil';
 
 describe('/users - Sign up - (API test)', () => {
   const OLD_ENV = process.env;
+  const userRepository = new UserRepository(TestUtil.prisma);
 
   beforeAll(async () => {
     await TestUtil.appinit();
@@ -23,6 +25,9 @@ describe('/users - Sign up - (API test)', () => {
       password: '#1234567890HAHAa',
     });
 
+    const user = await userRepository.findByEmail('w@w.com');
+
     expect(response.status).toBe(201);
+    expect(user).not.toBeNull();
   });
 });

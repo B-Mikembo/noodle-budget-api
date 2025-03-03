@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PasswordManager } from 'src/domain/user/manager/passwordManager';
+import { PasswordManager } from '../domain/user/manager/passwordManager';
 import { User } from '../domain/user/user';
 import { CreateUserAPI } from '../infrastructure/api/types/user/onboarding/createUserAPI';
 import { ApplicationError } from '../infrastructure/applicationError';

@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { PasswordManager } from './domain/user/manager/passwordManager';
 import { SignupController } from './infrastructure/api/signup.controller';
 import { PrismaService } from './infrastructure/prisma/prisma.service';
 import { UserRepository } from './infrastructure/repository/user/user.repository';
@@ -13,6 +14,6 @@ function getControllers(): any[] {
 @Module({
   imports: [],
   controllers: getControllers(),
-  providers: [PrismaService, UserRepository, SignupUsecase],
+  providers: [PrismaService, UserRepository, SignupUsecase, PasswordManager],
 })
 export class AppModule {}

@@ -17,7 +17,7 @@ async function bootstrap() {
     },
   };
   const config = new DocumentBuilder()
-    .setTitle(`Backend de l'application "Noodlge Budget"`)
+    .setTitle(`Backend de l'application "Noodle Budget"`)
     .setDescription(
       `Executable API Doc, all endpoints are testables in real conditions`,
     )

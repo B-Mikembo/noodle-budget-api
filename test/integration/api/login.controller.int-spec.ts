@@ -1,0 +1,51 @@
+import { PasswordManager } from '../../../src/domain/user/manager/passwordManager';
+import { UserRepository } from '../../../src/infrastructure/repository/user/user.repository';
+import { DB, TestUtil } from '../../TestUtil';
+
+function getFakeUser() {
+  return {
+    id: null,
+    passwordHash: '',
+    passwordSalt: '',
+  };
+}
+
+describe('/users - Log in - (API test)', () => {
+  const OLD_ENV = process.env;
+  const userRepository = new UserRepository(TestUtil.prisma);
+
+  beforeAll(async () => {
+    await TestUtil.appinit();
+  });
+
+  beforeEach(async () => {
+    process.env = { ...OLD_ENV };
+    await TestUtil.deleteAll();
+  });
+
+  afterAll(async () => {
+    process.env = OLD_ENV;
+    await TestUtil.appclose();
+  });
+
+  it('POST /users/login - connect user after sign in request', async () => {
+    const user = getFakeUser();
+    PasswordManager.setUserPassword(user, '#1234567890HAHAa');
+
+    await TestUtil.create(DB.user, {
+      passwordHash: user.passwordHash,
+      passwordSalt: user.passwordSalt,
+    });
+
+    const response = await TestUtil.getServer().post('/users/login').send({
+      email: 'w@w.com',
+      password: '#1234567890HAHAa',
+    });
+
+    const userDB = await userRepository.findByEmail('w@w.com');
+
+    expect(response.status).toBe(201);
+    expect(response.body.token.length).toBeGreaterThan(20);
+    expect(response.body.user.id).toEqual('user-id');
+  });
+});

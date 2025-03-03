@@ -13,6 +13,13 @@ export class ApplicationError {
     this.http_status = http_status ? http_status : 400;
   }
 
+  static throwMandatoryEmailError() {
+    this.throwAppError(
+      '009',
+      'Adresse électronique obligatoire pour créer un utilisateur',
+    );
+  }
+
   static throwPasswordCharSpe() {
     this.throwAppError(
       '017',

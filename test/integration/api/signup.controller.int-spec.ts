@@ -61,6 +61,17 @@ describe('/users - Sign up - (API test)', () => {
     );
   });
 
+  it('POST /users - email missing', async () => {
+    const response = await TestUtil.getServer().post('/users').send({
+      password: '#1234567890HAHAa',
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toEqual(
+      'Adresse électronique obligatoire pour créer un utilisateur',
+    );
+  });
+
   it('POST /users - bad email format', async () => {
     const response = await TestUtil.getServer().post('/users').send({
       email: 'truc.com',

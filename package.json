@@ -80,6 +80,6 @@
     "testTimeout": 20000
   },
   "prisma": {
-    "schema": "src/shell/prisma/schema.prisma"
+    "schema": "src/infrastructure/prisma/schema.prisma"
   }
 }

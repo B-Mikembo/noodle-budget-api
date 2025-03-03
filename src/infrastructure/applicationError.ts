@@ -41,6 +41,10 @@ export class ApplicationError {
     );
   }
 
+  static throwEmailAlreadyExistError(email) {
+    this.throwAppError('022', `Adresse électronique ${email} déjà existante`);
+  }
+
   static throwPasswordOneLowerCase() {
     this.throwAppError(
       '041',

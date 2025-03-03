@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, User as UserDB } from '@prisma/client';
+import { ApplicationError } from 'src/infrastructure/applicationError';
 import { v4 as uuidv4 } from 'uuid';
 import { User } from '../../../domain/user/user';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -31,7 +32,7 @@ export class UserRepository {
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
-          console.error(error);
+          ApplicationError.throwEmailAlreadyExistError(user.email);
         }
       }
     }

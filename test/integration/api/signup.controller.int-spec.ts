@@ -1,5 +1,5 @@
 import { UserRepository } from '../../../src/infrastructure/repository/user/user.repository';
-import { TestUtil } from '../../TestUtil';
+import { DB, TestUtil } from '../../TestUtil';
 
 describe('/users - Sign up - (API test)', () => {
   const OLD_ENV = process.env;
@@ -44,6 +44,20 @@ describe('/users - Sign up - (API test)', () => {
     expect(response.status).toBe(400);
     expect(response.body.message).toBe(
       'Le mot de passe doit contenir au moins un chiffre',
+    );
+  });
+
+  it('POST /users - throw error when email already exists', async () => {
+    await TestUtil.create(DB.user, { email: 'w@w.com' });
+
+    const response = await TestUtil.getServer().post('/users').send({
+      email: 'w@w.com',
+      password: '#1234567890HAHAa',
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toEqual(
+      'Adresse électronique w@w.com déjà existante',
     );
   });
 

@@ -46,6 +46,15 @@ export class TestUtil {
     await this.prisma.user.deleteMany();
   }
 
+  static async create<K extends keyof typeof TestUtil.TYPE_DATA_MAP>(
+    type: K,
+    override?: Parameters<(typeof TestUtil.TYPE_DATA_MAP)[K]>[0],
+  ) {
+    await this.prisma[type as string].create({
+      data: (TestUtil.TYPE_DATA_MAP[type as DB] as Function)(override),
+    });
+  }
+
   static userData(override?: Partial<User>): User {
     return {
       id: 'user-id',

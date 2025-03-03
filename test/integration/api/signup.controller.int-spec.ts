@@ -46,4 +46,16 @@ describe('/users - Sign up - (API test)', () => {
       'Le mot de passe doit contenir au moins un chiffre',
     );
   });
+
+  it('POST /users - bad email format', async () => {
+    const response = await TestUtil.getServer().post('/users').send({
+      email: 'truc.com',
+      password: '#1234567890HAHAa',
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toEqual(
+      `Format de l'adresse électronique truc.com incorrect`,
+    );
+  });
 });

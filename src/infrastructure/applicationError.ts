@@ -34,6 +34,13 @@ export class ApplicationError {
     );
   }
 
+  static throwBadEmailFormatError(email) {
+    this.throwAppError(
+      '020',
+      `Format de l'adresse électronique ${email} incorrect`,
+    );
+  }
+
   static throwPasswordOneLowerCase() {
     this.throwAppError(
       '041',

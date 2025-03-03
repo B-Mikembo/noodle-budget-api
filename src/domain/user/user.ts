@@ -1,4 +1,6 @@
+import { ApplicationError } from 'src/infrastructure/applicationError';
 import { v4 as uuidv4 } from 'uuid';
+import validator from 'validator';
 import { PasswordManager } from './manager/passwordManager';
 
 export class User {
@@ -31,5 +33,11 @@ export class User {
 
   public setPassword?(password: string) {
     PasswordManager.setUserPassword(this, password);
+  }
+
+  public static checkEmailFormat(email: string) {
+    if (!validator.isEmail(email)) {
+      ApplicationError.throwBadEmailFormatError(email);
+    }
   }
 }

@@ -1,6 +1,6 @@
-import { ApplicationError } from 'src/infrastructure/applicationError';
 import { v4 as uuidv4 } from 'uuid';
 import validator from 'validator';
+import { ApplicationError } from '../../infrastructure/applicationError';
 import { PasswordManager } from './manager/passwordManager';
 
 export class User {

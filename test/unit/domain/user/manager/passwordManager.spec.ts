@@ -1,6 +1,8 @@
 import { PasswordManager } from '../../../../../src/domain/user/manager/passwordManager';
 import { User } from '../../../../../src/domain/user/user';
 
+const passwordManager = new PasswordManager();
+
 describe('PasswordManager Object', () => {
   it('checkPasswordFormat : contains at least one digit', () => {
     try {
@@ -53,10 +55,34 @@ describe('PasswordManager Object', () => {
     }
   });
   it('setUserPassword : hash and salt password', () => {
-    let user = new User();
+    const user = new User();
     PasswordManager.setUserPassword(user, 'toto');
 
     expect(user.passwordHash.length).toBeGreaterThan(10);
     expect(user.passwordSalt.length).toBeGreaterThan(10);
+  });
+  it('checkPassword : OK and returns true', async () => {
+    let user = new User();
+    PasswordManager.setUserPassword(user, 'toto');
+
+    try {
+      await passwordManager.loginUser(user, 'toto');
+    } catch (error) {
+      console.error(error);
+      fail();
+    }
+  });
+  it('should throw an error when I send incorrect password', async () => {
+    let user = new User();
+    PasswordManager.setUserPassword(user, 'toto');
+
+    try {
+      await passwordManager.loginUser(user, 'titi');
+      fail();
+    } catch (error) {
+      expect(error.message).toEqual(
+        'Mauvaise adresse électronique ou mauvais mot de passe',
+      );
+    }
   });
 });

@@ -42,10 +42,10 @@ describe('/users - Log in - (API test)', () => {
       password: '#1234567890HAHAa',
     });
 
-    const userDB = await userRepository.findByEmail('w@w.com');
-
     expect(response.status).toBe(201);
     expect(response.body.token.length).toBeGreaterThan(20);
     expect(response.body.user.id).toEqual('user-id');
+    expect(response.body.user.lastName).toEqual('lastName');
+    expect(response.body.user.firstName).toEqual('firstName');
   });
 });

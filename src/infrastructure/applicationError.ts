@@ -13,6 +13,13 @@ export class ApplicationError {
     this.http_status = http_status ? http_status : 400;
   }
 
+  static throwBadPasswordOrEmailError() {
+    this.throwAppError(
+      '004',
+      'Mauvaise adresse électronique ou mauvais mot de passe',
+    );
+  }
+
   static throwMandatoryEmailError() {
     this.throwAppError(
       '009',

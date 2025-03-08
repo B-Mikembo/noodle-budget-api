@@ -3,9 +3,11 @@ import {
   ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
+  ApiOkResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { LoginUsecase } from '../../usecase/login.usecase';
 import { ApplicationError } from '../applicationError';
 import { GenericController } from './genericController';
 import { LoggedUserAPI } from './types/user/loggedUserAPI';
@@ -15,7 +17,7 @@ import { LoginUserAPI } from './types/user/loginUserAPI';
 @ApiBearerAuth()
 @ApiTags('1 - Users - Log in')
 export class LoginController extends GenericController {
-  constructor() {
+  constructor(private readonly loginUsecase: LoginUsecase) {
     super();
   }
   @Post('users/login')
@@ -26,9 +28,13 @@ export class LoginController extends GenericController {
   @ApiBody({
     type: LoginUserAPI,
   })
+  @ApiOkResponse({ type: LoggedUserAPI })
   @ApiBadRequestResponse({ type: ApplicationError })
   async loginUser(@Body() body: LoginUserAPI): Promise<LoggedUserAPI> {
-    console.log('prout');
-    return LoggedUserAPI.mapToAPI('', null);
+    const loggedUser = await this.loginUsecase.loginUser(
+      body.email,
+      body.password,
+    );
+    return LoggedUserAPI.mapToAPI(loggedUser.token, loggedUser.user);
   }
 }

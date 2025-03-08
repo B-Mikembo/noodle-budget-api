@@ -1,11 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import crypto from 'crypto';
 import { ApplicationError } from '../../../infrastructure/applicationError';
+import { User } from '../user';
 import { PasswordAwareUser } from './passwordAwareUser';
 
 @Injectable()
 export class PasswordManager {
   constructor() {}
+
+  public async loginUser(user: User, password: string): Promise<any> {
+    const login_ok = await this.checkUserPasswordOK(user, password);
+    if (!login_ok) {
+      console.log(`CONNEXION : loginUser : [${user.id}] bad password`);
+      ApplicationError.throwBadPasswordOrEmailError();
+    }
+  }
 
   public static checkPasswordFormat(password: string) {
     if (!this.atLeastOneDigit(password)) {
@@ -30,6 +39,21 @@ export class PasswordManager {
     user.passwordHash = crypto
       .pbkdf2Sync(password, user.passwordSalt, 1000, 64, 'sha512')
       .toString('hex');
+  }
+
+  private async checkUserPasswordOK(
+    user: PasswordAwareUser,
+    password: string,
+  ): Promise<boolean> {
+    let ok = false;
+    if (user.passwordHash && user.passwordSalt) {
+      ok =
+        user.passwordHash ===
+        crypto
+          .pbkdf2Sync(password, user.passwordSalt, 1000, 64, `sha512`)
+          .toString(`hex`);
+    }
+    return ok;
   }
 
   private static atLeastSpecialCharacter(password: string | null): boolean {

@@ -28,7 +28,7 @@ describe('/users - Log in - (API test)', () => {
     await TestUtil.appclose();
   });
 
-  it('POST /users/login - connect user after sign in request', async () => {
+  it('POST /users/login - should connect me and return my informations with JWT token when I send correct credentials', async () => {
     const user = getFakeUser();
     PasswordManager.setUserPassword(user, '#1234567890HAHAa');
 

@@ -45,8 +45,9 @@ jobs:
         run: npm run test:unit
 
       - name: Integration tests
-        run: | 
+        run: |
           npm run db:update
           npm run test:int
         env:
           DATABASE_URL: 'postgresql://prisma:prisma@localhost:5433/tests'
+          INTERNAL_TOKEN_SECRET: '123456789012345678901234567890'

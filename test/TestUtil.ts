@@ -1,4 +1,5 @@
 import { INestApplication } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { User } from '@prisma/client';
 import request from 'supertest';
@@ -19,6 +20,16 @@ export class TestUtil {
   public static app: INestApplication;
   public static prisma = new PrismaService();
   public static user = 'user';
+  public static SECRET = '123456789012345678901234567890';
+  public static jwtService = new JwtService({
+    secret: TestUtil.SECRET,
+  });
+  public static token;
+
+  static async generateAuthorizationToken(userId: string) {
+    const result = await TestUtil.jwtService.signAsync({ userId });
+    TestUtil.token = result;
+  }
 
   static getServer() {
     return request(this.app.getHttpServer());

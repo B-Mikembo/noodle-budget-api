@@ -27,6 +27,7 @@
   "dependencies": {
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
+    "@nestjs/jwt": "^10.2.0",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^8.1.1",
     "@prisma/client": "^6.4.1",
@@ -80,6 +81,6 @@
     "testTimeout": 20000
   },
   "prisma": {
-    "schema": "src/shell/prisma/schema.prisma"
+    "schema": "src/infrastructure/prisma/schema.prisma"
   }
 }

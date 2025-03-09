@@ -13,6 +13,13 @@ export class ApplicationError {
     this.http_status = http_status ? http_status : 400;
   }
 
+  static throwBadPasswordOrEmailError() {
+    this.throwAppError(
+      '004',
+      'Mauvaise adresse électronique ou mauvais mot de passe',
+    );
+  }
+
   static throwMandatoryEmailError() {
     this.throwAppError(
       '009',
@@ -64,6 +71,14 @@ export class ApplicationError {
       '041',
       'Le mot de passe doit contenir au moins une majuscule',
     );
+  }
+
+  static throwMissingEmail() {
+    this.throwAppError('063', 'Adresse électronique manquante');
+  }
+
+  static throwMissingPassword() {
+    this.throwAppError('064', 'Mot de passe manquant');
   }
 
   private static throwAppError(

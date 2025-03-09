@@ -68,4 +68,26 @@ describe('/users - Log in - (API test)', () => {
       'Mauvaise adresse électronique ou mauvais mot de passe',
     );
   });
+  it('POST /users/login - should throw an error when I send bad password', async () => {
+    //  GIVEN
+    const user = getFakeUser();
+    PasswordManager.setUserPassword(user, '#1234567890HAHAa');
+
+    await TestUtil.create(DB.user, {
+      passwordHash: user.passwordHash,
+      passwordSalt: user.passwordSalt,
+    });
+
+    //  WHEN
+    const response = await TestUtil.getServer().post('/users/login').send({
+      password: '#bad password',
+      email: 'yo@truc.com',
+    });
+
+    //  THEN
+    expect(response.status).toBe(400);
+    expect(response.body.message).toEqual(
+      'Mauvaise adresse électronique ou mauvais mot de passe',
+    );
+  });
 });

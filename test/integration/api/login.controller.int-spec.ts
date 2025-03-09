@@ -60,6 +60,17 @@ describe('/users - Log in - (API test)', () => {
     expect(response.status).toBe(400);
     expect(response.body.message).toEqual('Adresse électronique manquante');
   });
+  it(`POST /users/login - should throw an error when I don't send password`, async () => {
+    //  WHEN
+    const response = await TestUtil.getServer().post('/users/login').send({
+      email: 'yo@truc.com',
+      password: '',
+    });
+
+    //  THEN
+    expect(response.status).toBe(400);
+    expect(response.body.message).toEqual('Mot de passe manquant');
+  });
   it('POST /users/login - should throw an error when I send bad email', async () => {
     const user = getFakeUser();
     PasswordManager.setUserPassword(user, '#1234567890HAHAa');

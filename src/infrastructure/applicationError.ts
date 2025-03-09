@@ -77,6 +77,10 @@ export class ApplicationError {
     this.throwAppError('063', 'Adresse électronique manquante');
   }
 
+  static throwMissingPassword() {
+    this.throwAppError('064', 'Mot de passe manquant');
+  }
+
   private static throwAppError(
     code: string,
     message: string,

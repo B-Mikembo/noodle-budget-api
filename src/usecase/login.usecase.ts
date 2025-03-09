@@ -20,6 +20,9 @@ export class LoginUsecase {
     if (!email || email === '') {
       ApplicationError.throwMissingEmail();
     }
+    if (!password || password === '') {
+      ApplicationError.throwMissingPassword();
+    }
     const user = await this.userRepository.findByEmail(email);
     if (!user) {
       ApplicationError.throwBadPasswordOrEmailError();

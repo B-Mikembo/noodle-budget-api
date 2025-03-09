@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PasswordManager } from './domain/user/manager/passwordManager';
-import { LoginController } from './infrastructure/api/logIn.controller';
+import { LoginController } from './infrastructure/api/login.controller';
 import { SignupController } from './infrastructure/api/signup.controller';
 import { PrismaService } from './infrastructure/prisma/prisma.service';
 import { TokenRepository } from './infrastructure/repository/token.repository';

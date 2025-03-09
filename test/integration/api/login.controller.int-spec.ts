@@ -21,6 +21,7 @@ describe('/users - Log in - (API test)', () => {
   beforeEach(async () => {
     process.env = { ...OLD_ENV };
     await TestUtil.deleteAll();
+    await TestUtil.generateAuthorizationToken('user-id');
   });
 
   afterAll(async () => {
@@ -38,7 +39,7 @@ describe('/users - Log in - (API test)', () => {
     });
 
     const response = await TestUtil.getServer().post('/users/login').send({
-      email: 'w@w.com',
+      email: 'yo@truc.com',
       password: '#1234567890HAHAa',
     });
 
@@ -47,5 +48,24 @@ describe('/users - Log in - (API test)', () => {
     expect(response.body.user.id).toEqual('user-id');
     expect(response.body.user.lastName).toEqual('lastName');
     expect(response.body.user.firstName).toEqual('firstName');
+  });
+  it('POST /users/login - should throw an error when I send bad email', async () => {
+    const user = getFakeUser();
+    PasswordManager.setUserPassword(user, '#1234567890HAHAa');
+
+    await TestUtil.create(DB.user, {
+      passwordHash: user.passwordHash,
+      passwordSalt: user.passwordSalt,
+    });
+
+    const response = await TestUtil.getServer().post('/users/login').send({
+      password: '#1234567890HAHAa',
+      email: 'bademail@truc.com',
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toEqual(
+      'Mauvais adress électronique ou mauvais mot de passe',
+    );
   });
 });

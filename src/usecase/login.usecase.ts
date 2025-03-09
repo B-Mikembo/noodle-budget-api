@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PasswordManager } from '../domain/user/manager/passwordManager';
 import { User } from '../domain/user/user';
+import { ApplicationError } from '../infrastructure/applicationError';
 import { TokenRepository } from '../infrastructure/repository/token.repository';
 import { UserRepository } from '../infrastructure/repository/user/user.repository';
 
@@ -17,6 +18,9 @@ export class LoginUsecase {
     password: string,
   ): Promise<{ token: string; user: User }> {
     const user = await this.userRepository.findByEmail(email);
+    if (!user) {
+      ApplicationError.throwBadPasswordOrEmailError();
+    }
     console.log(user);
     await this.passwodManager.loginUser(user, password);
     const token = await this.tokenRepository.createNewAppToken(user.id);

@@ -65,7 +65,7 @@ describe('/users - Log in - (API test)', () => {
 
     expect(response.status).toBe(400);
     expect(response.body.message).toEqual(
-      'Mauvais adress électronique ou mauvais mot de passe',
+      'Mauvaise adresse électronique ou mauvais mot de passe',
     );
   });
 });

@@ -25,6 +25,7 @@ export class LoginUsecase {
     }
     const user = await this.userRepository.findByEmail(email);
     if (!user) {
+      console.log(`CONNEXION : loginUser : [${email}] mauvais email`);
       ApplicationError.throwBadPasswordOrEmailError();
     }
     console.log(user);

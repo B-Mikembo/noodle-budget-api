@@ -73,6 +73,10 @@ export class ApplicationError {
     );
   }
 
+  static throwMissingEmail() {
+    this.throwAppError('063', 'Adresse électronique manquante');
+  }
+
   private static throwAppError(
     code: string,
     message: string,

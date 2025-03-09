@@ -17,6 +17,9 @@ export class LoginUsecase {
     email: string,
     password: string,
   ): Promise<{ token: string; user: User }> {
+    if (!email || email === '') {
+      ApplicationError.throwMissingEmail();
+    }
     const user = await this.userRepository.findByEmail(email);
     if (!user) {
       ApplicationError.throwBadPasswordOrEmailError();

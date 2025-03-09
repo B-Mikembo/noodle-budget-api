@@ -49,6 +49,17 @@ describe('/users - Log in - (API test)', () => {
     expect(response.body.user.lastName).toEqual('lastName');
     expect(response.body.user.firstName).toEqual('firstName');
   });
+  it(`POST /users/login - should throw an error when I don't send email`, async () => {
+    //  WHEN
+    const response = await TestUtil.getServer().post('/users/login').send({
+      email: '',
+      password: '#1234567890HAHAa',
+    });
+
+    //  THEN
+    expect(response.status).toBe(400);
+    expect(response.body.message).toEqual('Adresse électronique manquante');
+  });
   it('POST /users/login - should throw an error when I send bad email', async () => {
     const user = getFakeUser();
     PasswordManager.setUserPassword(user, '#1234567890HAHAa');

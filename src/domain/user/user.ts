@@ -19,10 +19,10 @@ export class User {
     }
   }
 
-  public static createNewUser(email: string): User {
+  public static createNewUser(firstName: string, email: string): User {
     return new User({
       lastName: null,
-      firstName: null,
+      firstName: firstName,
       email: email,
       id: uuidv4(),
       passwordHash: null,

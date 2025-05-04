@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { SignupUsecase } from '../../usecase/signup.usecase';
+import { SignupUsecase } from '../../usecase/sign-up.usecase';
 import { GenericController } from './genericController';
 import { CreateUserAPI } from './types/user/onboarding/createUserAPI';
 import { ProspectSubmitAPI } from './types/user/onboarding/prospectSubmitAPI';

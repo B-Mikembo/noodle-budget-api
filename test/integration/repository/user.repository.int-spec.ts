@@ -18,7 +18,7 @@ describe('UserRepository', () => {
   });
 
   it('create and read', async () => {
-    const user = User.createNewUser('w@w.com');
+    const user = User.createNewUser('Bob', 'w@w.com');
     user.id = 'user-id';
 
     await userRepository.createUser(user);

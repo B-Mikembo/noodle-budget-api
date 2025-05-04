@@ -2,12 +2,12 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PasswordManager } from './domain/user/manager/passwordManager';
 import { LoginController } from './infrastructure/api/login.controller';
-import { SignupController } from './infrastructure/api/signup.controller';
+import { SignupController } from './infrastructure/api/sign-up.controller';
 import { PrismaService } from './infrastructure/prisma/prisma.service';
 import { TokenRepository } from './infrastructure/repository/token.repository';
 import { UserRepository } from './infrastructure/repository/user/user.repository';
 import { LoginUsecase } from './usecase/login.usecase';
-import { SignupUsecase } from './usecase/signup.usecase';
+import { SignupUsecase } from './usecase/sign-up.usecase';
 
 const SESSION_LIFETIME = '30 days';
 

@@ -14,10 +14,17 @@ export class SignupUsecase {
       ApplicationError.throwMandatoryEmailError();
     }
 
+    if (!userInput.firstName) {
+      ApplicationError.throwMandatoryFirstName();
+    }
+
     PasswordManager.checkPasswordFormat(userInput.password);
     User.checkEmailFormat(userInput.email);
 
-    const userToCreate = User.createNewUser(userInput.email);
+    const userToCreate = User.createNewUser(
+      userInput.firstName,
+      userInput.email,
+    );
     userToCreate.setPassword(userInput.password);
 
     await this.userRepository.createUser(userToCreate);

@@ -27,6 +27,10 @@ export class ApplicationError {
     );
   }
 
+  static throwMandatoryFirstName() {
+    this.throwAppError('009', 'Prénom obligatoire pour créer un utilisateur');
+  }
+
   static throwPasswordCharSpe() {
     this.throwAppError(
       '017',

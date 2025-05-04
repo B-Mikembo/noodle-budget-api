@@ -19,8 +19,9 @@ describe('/users - Sign up - (API test)', () => {
     await TestUtil.appclose();
   });
 
-  it('POST /users - create new user with only email and password', async () => {
+  it('POST /users - create new user with firstnamae, email and password', async () => {
     const response = await TestUtil.getServer().post('/users').send({
+      firstName: 'Bob',
       email: 'w@w.com',
       password: '#1234567890HAHAa',
     });
@@ -28,15 +29,27 @@ describe('/users - Sign up - (API test)', () => {
     const user = await userRepository.findByEmail('w@w.com');
 
     expect(response.status).toBe(201);
-    expect(user.lastName).toBeNull();
-    expect(user.firstName).toBeNull();
+    expect(user.firstName).toEqual('Bob');
     expect(user.email).toEqual('w@w.com');
     expect(user.passwordHash.length).toBeGreaterThan(20);
     expect(user.passwordSalt.length).toBeGreaterThan(20);
   });
 
+  it('POST /users - should throw an exception about fristName mandatory when missing firstName on sign up', async () => {
+    const response = await TestUtil.getServer().post('/users').send({
+      email: 'w@w.com',
+      password: '#1234567890HAHAa',
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe(
+      'Prénom obligatoire pour créer un utilisateur',
+    );
+  });
+
   it('POST /users - bad password', async () => {
     const response = await TestUtil.getServer().post('/users').send({
+      firstName: 'Bob',
       email: 'w@w.com',
       password: 'to use',
     });
@@ -51,6 +64,7 @@ describe('/users - Sign up - (API test)', () => {
     await TestUtil.create(DB.user, { email: 'w@w.com' });
 
     const response = await TestUtil.getServer().post('/users').send({
+      firstName: 'Bob',
       email: 'w@w.com',
       password: '#1234567890HAHAa',
     });
@@ -63,6 +77,7 @@ describe('/users - Sign up - (API test)', () => {
 
   it('POST /users - email missing', async () => {
     const response = await TestUtil.getServer().post('/users').send({
+      firstName: 'Bob',
       password: '#1234567890HAHAa',
     });
 
@@ -74,6 +89,7 @@ describe('/users - Sign up - (API test)', () => {
 
   it('POST /users - bad email format', async () => {
     const response = await TestUtil.getServer().post('/users').send({
+      firstName: 'Bob',
       email: 'truc.com',
       password: '#1234567890HAHAa',
     });
